@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7</OriginalElement>
+  <nodes>
+    <node x="0.0" y="376.0">44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.ogiri</node>
+    <node x="58.5" y="136.0">44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.odai</node>
+    <node x="252.0" y="376.0">44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.boke</node>
+    <node x="263.046875" y="590.0">44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.vote</node>
+    <node x="310.78125" y="-10.0">44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.user</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.vote" target="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.boke">
+      <point x="0.0" y="-69.0" />
+      <point x="0.0" y="82.0" />
+    </edge>
+    <edge source="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.boke" target="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.odai">
+      <point x="-53.25" y="-82.0" />
+      <point x="305.25" y="351.0" />
+      <point x="231.0" y="351.0" />
+      <point x="57.5" y="95.0" />
+    </edge>
+    <edge source="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.odai" target="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.user">
+      <point x="0.0" y="-95.0" />
+      <point x="173.5" y="111.0" />
+      <point x="341.11458333333337" y="111.0" />
+      <point x="-58.66666666666666" y="43.0" />
+    </edge>
+    <edge source="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.ogiri" target="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.odai">
+      <point x="0.0" y="-82.0" />
+      <point x="-57.5" y="95.0" />
+    </edge>
+    <edge source="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.vote" target="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.user">
+      <point x="63.666666666666686" y="-69.0" />
+      <point x="422.2135416666667" y="565.0" />
+      <point x="475.5" y="565.0" />
+      <point x="475.5" y="111.0" />
+      <point x="458.44791666666663" y="111.0" />
+      <point x="58.66666666666663" y="43.0" />
+    </edge>
+    <edge source="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.vote" target="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.ogiri">
+      <point x="-63.66666666666663" y="-69.0" />
+      <point x="294.88020833333337" y="565.0" />
+      <point x="116.0" y="565.0" />
+      <point x="0.0" y="82.0" />
+    </edge>
+    <edge source="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.boke" target="44d76dc8-eaa3-46c2-b7ef-0ad77f9ab1c7.TABLE:ogiri.user">
+      <point x="53.25" y="-82.0" />
+      <point x="411.75" y="111.0" />
+      <point x="399.78125" y="111.0" />
+      <point x="0.0" y="43.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="259.0" y="364.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+  </Categories>
+</Diagram>
+

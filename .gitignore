@@ -16,4 +16,5 @@
 # custom data
 *.env
 *.idea/
+*db/
 
