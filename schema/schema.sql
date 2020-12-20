@@ -11,7 +11,6 @@ create table odai (
   id integer primary key auto_increment,
   questioner_id integer not null,
   odai varchar(128) not null,
-  ogigi_id integer not null,
   next_ogiri_id varchar(36) not null unique,
   published_at datetime default current_timestamp(),
 

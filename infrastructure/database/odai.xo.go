@@ -14,7 +14,6 @@ type Odai struct {
 	ID           int            `json:"id"`            // id
 	QuestionerID int            `json:"questioner_id"` // questioner_id
 	Odai         string         `json:"odai"`          // odai
-	OgigiID      int            `json:"ogigi_id"`      // ogigi_id
 	NextOgiriID  string         `json:"next_ogiri_id"` // next_ogiri_id
 	PublishedAt  mysql.NullTime `json:"published_at"`  // published_at
 
@@ -43,14 +42,14 @@ func (o *Odai) Insert(db XODB) error {
 
 	// sql insert query, primary key provided by autoincrement
 	const sqlstr = `INSERT INTO ogiri.odai (` +
-		`questioner_id, odai, ogigi_id, next_ogiri_id, published_at` +
+		`questioner_id, odai, next_ogiri_id, published_at` +
 		`) VALUES (` +
 		`?, ?, ?, ?, ?` +
 		`)`
 
 	// run query
-	XOLog(sqlstr, o.QuestionerID, o.Odai, o.OgigiID, o.NextOgiriID, o.PublishedAt)
-	res, err := db.Exec(sqlstr, o.QuestionerID, o.Odai, o.OgigiID, o.NextOgiriID, o.PublishedAt)
+	XOLog(sqlstr, o.QuestionerID, o.Odai, o.NextOgiriID, o.PublishedAt)
+	res, err := db.Exec(sqlstr, o.QuestionerID, o.Odai, o.NextOgiriID, o.PublishedAt)
 	if err != nil {
 		return err
 	}
@@ -84,12 +83,12 @@ func (o *Odai) Update(db XODB) error {
 
 	// sql query
 	const sqlstr = `UPDATE ogiri.odai SET ` +
-		`questioner_id = ?, odai = ?, ogigi_id = ?, next_ogiri_id = ?, published_at = ?` +
+		`questioner_id = ?, odai = ?, next_ogiri_id = ?, published_at = ?` +
 		` WHERE id = ?`
 
 	// run query
-	XOLog(sqlstr, o.QuestionerID, o.Odai, o.OgigiID, o.NextOgiriID, o.PublishedAt, o.ID)
-	_, err = db.Exec(sqlstr, o.QuestionerID, o.Odai, o.OgigiID, o.NextOgiriID, o.PublishedAt, o.ID)
+	XOLog(sqlstr, o.QuestionerID, o.Odai, o.NextOgiriID, o.PublishedAt, o.ID)
+	_, err = db.Exec(sqlstr, o.QuestionerID, o.Odai, o.NextOgiriID, o.PublishedAt, o.ID)
 	return err
 }
 
@@ -147,7 +146,7 @@ func OdaisByQuestionerID(db XODB, questionerID int) ([]*Odai, error) {
 
 	// sql query
 	const sqlstr = `SELECT ` +
-		`id, questioner_id, odai, ogigi_id, next_ogiri_id, published_at ` +
+		`id, questioner_id, odai, next_ogiri_id, published_at ` +
 		`FROM ogiri.odai ` +
 		`WHERE questioner_id = ?`
 
@@ -167,7 +166,7 @@ func OdaisByQuestionerID(db XODB, questionerID int) ([]*Odai, error) {
 		}
 
 		// scan
-		err = q.Scan(&o.ID, &o.QuestionerID, &o.Odai, &o.OgigiID, &o.NextOgiriID, &o.PublishedAt)
+		err = q.Scan(&o.ID, &o.QuestionerID, &o.Odai, &o.NextOgiriID, &o.PublishedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -186,7 +185,7 @@ func OdaiByNextOgiriID(db XODB, nextOgiriID string) (*Odai, error) {
 
 	// sql query
 	const sqlstr = `SELECT ` +
-		`id, questioner_id, odai, ogigi_id, next_ogiri_id, published_at ` +
+		`id, questioner_id, odai, next_ogiri_id, published_at ` +
 		`FROM ogiri.odai ` +
 		`WHERE next_ogiri_id = ?`
 
@@ -196,7 +195,7 @@ func OdaiByNextOgiriID(db XODB, nextOgiriID string) (*Odai, error) {
 		_exists: true,
 	}
 
-	err = db.QueryRow(sqlstr, nextOgiriID).Scan(&o.ID, &o.QuestionerID, &o.Odai, &o.OgigiID, &o.NextOgiriID, &o.PublishedAt)
+	err = db.QueryRow(sqlstr, nextOgiriID).Scan(&o.ID, &o.QuestionerID, &o.Odai, &o.NextOgiriID, &o.PublishedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +211,7 @@ func OdaiByID(db XODB, id int) (*Odai, error) {
 
 	// sql query
 	const sqlstr = `SELECT ` +
-		`id, questioner_id, odai, ogigi_id, next_ogiri_id, published_at ` +
+		`id, questioner_id, odai, next_ogiri_id, published_at ` +
 		`FROM ogiri.odai ` +
 		`WHERE id = ?`
 
@@ -222,7 +221,7 @@ func OdaiByID(db XODB, id int) (*Odai, error) {
 		_exists: true,
 	}
 
-	err = db.QueryRow(sqlstr, id).Scan(&o.ID, &o.QuestionerID, &o.Odai, &o.OgigiID, &o.NextOgiriID, &o.PublishedAt)
+	err = db.QueryRow(sqlstr, id).Scan(&o.ID, &o.QuestionerID, &o.Odai, &o.NextOgiriID, &o.PublishedAt)
 	if err != nil {
 		return nil, err
 	}
