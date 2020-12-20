@@ -10,8 +10,15 @@ type MySQLConfig struct {
 	DataBase string `default:"ogiri" required:"true"`
 }
 
+type OogiriConfig struct {
+	AnswerSection int `default:"3" require:"true"`
+	VoteSection int `default:"3" require:"true"`
+	QuestionSection int `default:"3" require:"true"`
+}
+
 type Config struct {
 	MySQL MySQLConfig `envconfig:"MYSQL" required:"true"`
+	Oogiri OogiriConfig `envconfig:"OOGIRI" require:"true"`
 }
 
 func Init() (*Config, error) {
