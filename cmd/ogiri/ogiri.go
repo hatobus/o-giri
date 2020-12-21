@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/hatobus/o-giri/config"
 	"os"
+
+	"github.com/hatobus/o-giri/config"
+	"github.com/hatobus/o-giri/infrastructure/database"
 )
 
 func main() {
@@ -12,5 +14,12 @@ func main() {
 		fmt.Fprintf(os.Stderr, "[ERROR] faild to load config. err: %v", err)
 		os.Exit(1)
 	}
-	fmt.Println(conf)
+
+	db, err := database.Connect(conf.MySQL)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "[ERROR] faild to connect database. err: %v", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(db.Stats())
 }
