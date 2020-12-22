@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"os"
 
@@ -29,10 +28,12 @@ func main() {
 
 	lis, err := net.Listen("tcp", conf.ServerPort)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "[ERROR] faild to open tcp port. err: %v", err)
+		os.Exit(1)
 	}
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "[ERROR] faild to start server. err: %v", err)
+		os.Exit(1)
 	}
 }

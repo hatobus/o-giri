@@ -4,8 +4,17 @@ package ogiri;
 
 message Empty {}
 
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginRes {
+  string token = 1;
+}
+
 // ユーザーに大喜利のネタを通知する
-message Ogiri {
+message OgiriStart {
   string ogiri_id = 1;
   string odai_id = 2;
   int64 answer_duration = 3;
@@ -31,4 +40,11 @@ message VoteRequest {
 message OdaiRequest {
   int64 questioner_id = 1;
   string odai = 2;
+}
+
+service User {
+  /**
+    ユーザーに関わるAPI
+   */
+  rpc Login(LoginRequest) returns (LoginRes);
 }
