@@ -9,8 +9,9 @@ import (
 
 // User represents a row from 'ogiri.user'.
 type User struct {
-	ID   int    `json:"id"`   // id
-	Name string `json:"name"` // name
+	ID       int    `json:"id"`       // id
+	Name     string `json:"name"`     // name
+	Password string `json:"password"` // password
 
 	// xo fields
 	_exists, _deleted bool
@@ -37,14 +38,14 @@ func (u *User) Insert(db XODB) error {
 
 	// sql insert query, primary key provided by autoincrement
 	const sqlstr = `INSERT INTO ogiri.user (` +
-		`name` +
+		`name, password` +
 		`) VALUES (` +
-		`?` +
+		`?, ?` +
 		`)`
 
 	// run query
-	XOLog(sqlstr, u.Name)
-	res, err := db.Exec(sqlstr, u.Name)
+	XOLog(sqlstr, u.Name, u.Password)
+	res, err := db.Exec(sqlstr, u.Name, u.Password)
 	if err != nil {
 		return err
 	}
@@ -78,12 +79,12 @@ func (u *User) Update(db XODB) error {
 
 	// sql query
 	const sqlstr = `UPDATE ogiri.user SET ` +
-		`name = ?` +
+		`name = ?, password = ?` +
 		` WHERE id = ?`
 
 	// run query
-	XOLog(sqlstr, u.Name, u.ID)
-	_, err = db.Exec(sqlstr, u.Name, u.ID)
+	XOLog(sqlstr, u.Name, u.Password, u.ID)
+	_, err = db.Exec(sqlstr, u.Name, u.Password, u.ID)
 	return err
 }
 
@@ -126,6 +127,32 @@ func (u *User) Delete(db XODB) error {
 	return nil
 }
 
+// UserByName retrieves a row from 'ogiri.user' as a User.
+//
+// Generated from index 'name'.
+func UserByName(db XODB, name string) (*User, error) {
+	var err error
+
+	// sql query
+	const sqlstr = `SELECT ` +
+		`id, name, password ` +
+		`FROM ogiri.user ` +
+		`WHERE name = ?`
+
+	// run query
+	XOLog(sqlstr, name)
+	u := User{
+		_exists: true,
+	}
+
+	err = db.QueryRow(sqlstr, name).Scan(&u.ID, &u.Name, &u.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	return &u, nil
+}
+
 // UserByID retrieves a row from 'ogiri.user' as a User.
 //
 // Generated from index 'user_id_pkey'.
@@ -134,7 +161,7 @@ func UserByID(db XODB, id int) (*User, error) {
 
 	// sql query
 	const sqlstr = `SELECT ` +
-		`id, name ` +
+		`id, name, password ` +
 		`FROM ogiri.user ` +
 		`WHERE id = ?`
 
@@ -144,7 +171,7 @@ func UserByID(db XODB, id int) (*User, error) {
 		_exists: true,
 	}
 
-	err = db.QueryRow(sqlstr, id).Scan(&u.ID, &u.Name)
+	err = db.QueryRow(sqlstr, id).Scan(&u.ID, &u.Name, &u.Password)
 	if err != nil {
 		return nil, err
 	}
