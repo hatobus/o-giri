@@ -20,6 +20,7 @@ type Config struct {
 	MySQL MySQLConfig `envconfig:"MYSQL" required:"true"`
 	Oogiri OogiriConfig `envconfig:"OOGIRI" require:"true"`
 	ServerPort string `envconfig:"PORT" required:"true"`
+	HashSalt string `envconfig:"SALT" required:"true"`
 }
 
 func Init() (*Config, error) {

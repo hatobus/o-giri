@@ -5,12 +5,12 @@ import (
 	"crypto/sha512"
 	"database/sql"
 	"encoding/hex"
-	"errors"
 	"fmt"
+	"log"
+
 	"github.com/hatobus/o-giri/infrastructure/database"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 
 	pb "github.com/hatobus/o-giri/protobuf"
 )
@@ -25,10 +25,11 @@ var (
 
 type UserServer struct {
 	DB *sql.DB
+	Salt string
 }
 
-func NewUserServer(db *sql.DB) *UserServer {
-	return &UserServer{db}
+func NewUserServer(db *sql.DB, hashSalt string) *UserServer {
+	return &UserServer{db, hashSalt}
 }
 
 func (u *UserServer) UserSignUp(_ context.Context, signUpReq *pb.SignUpRequest) (*pb.Empty, error) {
@@ -50,7 +51,7 @@ func (u *UserServer) UserSignUp(_ context.Context, signUpReq *pb.SignUpRequest) 
 		}
 	}
 
-	encPW := sha512.Sum512([]byte(signUpReq.Password))
+	encPW := sha512.Sum512([]byte(signUpReq.Password+u.Salt))
 
 	newUser := &database.User{
 		Name: signUpReq.Username,

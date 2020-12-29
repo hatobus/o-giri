@@ -5,6 +5,9 @@ import (
 	"net"
 	"os"
 
+	"github.com/hatobus/o-giri/controller"
+	ogiri "github.com/hatobus/o-giri/protobuf"
+
 	"google.golang.org/grpc"
 
 	"github.com/hatobus/o-giri/config"
@@ -18,7 +21,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	_, err = database.Connect(conf.MySQL)
+	db, err := database.Connect(conf.MySQL)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "[ERROR] faild to connect database. err: %v", err)
 		os.Exit(1)
@@ -36,4 +39,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "[ERROR] faild to start server. err: %v", err)
 		os.Exit(1)
 	}
+
+	userServer := controller.NewUserServer(db, conf.HashSalt)
+
+	grpc.Server.RegisterService(&ogiri.User_serviceDesc, userServer)
 }
