@@ -7,6 +7,7 @@ import (
 
 	"github.com/hatobus/o-giri/controller"
 	ogiri "github.com/hatobus/o-giri/protobuf"
+	"google.golang.org/grpc/reflection"
 
 	"google.golang.org/grpc"
 
@@ -35,12 +36,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	userServer := controller.NewUserServer(db, conf.HashSalt)
+
+	s.RegisterService(&ogiri.UserServicedesc, userServer)
+
+	reflection.Register(s)
+
 	if err := s.Serve(lis); err != nil {
 		fmt.Fprintf(os.Stderr, "[ERROR] faild to start server. err: %v", err)
 		os.Exit(1)
 	}
-
-	userServer := controller.NewUserServer(db, conf.HashSalt)
-
-	grpc.Server.RegisterService(&ogiri.User_serviceDesc, userServer)
 }

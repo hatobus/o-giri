@@ -15,7 +15,7 @@ type UserServer interface {
 	UserLogin(context.Context, *LoginRequest) (*LoginRes, error)
 }
 
-func login_handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func loginHandler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -33,13 +33,13 @@ func login_handler(srv interface{}, ctx context.Context, dec func(interface{}) e
 	return interceptor(ctx, in, info, handler)
 }
 
-var User_serviceDesc = grpc.ServiceDesc{
+var UserServicedesc = grpc.ServiceDesc{
 	ServiceName: "ogiri.User",
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Login",
-			Handler: login_handler,
+			Handler:    loginHandler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
