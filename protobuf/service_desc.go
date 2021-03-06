@@ -33,6 +33,24 @@ func loginHandler(srv interface{}, ctx context.Context, dec func(interface{}) er
 	return interceptor(ctx, in, info, handler)
 }
 
+func signUpHandler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignUpRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserSignUp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ogiri.Public/SignUp",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserSignUp(ctx, req.(*SignUpRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var UserServicedesc = grpc.ServiceDesc{
 	ServiceName: "ogiri.User",
 	HandlerType: (*UserServer)(nil),
@@ -40,6 +58,11 @@ var UserServicedesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    loginHandler,
+		},
+		{
+			MethodName: "SignUp",
+			Handler: signUpHandler,
+
 		},
 	},
 	Streams: []grpc.StreamDesc{},
