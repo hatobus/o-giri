@@ -19,6 +19,8 @@ var (
 	InvalidUserNameLength = "ユーザー名は3文字以上32文字以下である必要があります"
 	InvalidPasswordLength = "パスワードは8文字以上64文字以下である必要があります"
 	InvalidDuplicatedUserName = "%v はすでに登録されているユーザー名です"
+	InvalidUserNameNotFound = "指定されたユーザーは見つかりませんでした"
+	InvalidUserNameOrPassword = "ユーザー名またはパスワードが違います"
 
 	InternalServerError = "サーバー側のエラーです 運営にお問い合わせください"
 )
@@ -66,6 +68,31 @@ func (u *UserServer) UserSignUp(_ context.Context, signUpReq *pb.SignUpRequest) 
 	return &pb.Empty{}, nil
 }
 
-func (u *UserServer) UserLogin(c context.Context, loginReq *pb.LoginRequest) (*pb.LoginRes, error) {
-	panic("not impl")
+func (u *UserServer) UserLogin(_ context.Context, loginReq *pb.LoginRequest) (*pb.LoginRes, error) {
+	if len(loginReq.Username) < 3 || len(loginReq.Username) > 16 {
+		return &pb.LoginRes{}, status.Error(codes.InvalidArgument, InvalidUserNameLength)
+	}
+
+	if len(loginReq.Password) < 8 || len(loginReq.Password) > 64 {
+		return &pb.LoginRes{}, status.Error(codes.InvalidArgument, InvalidPasswordLength)
+	}
+
+	user, err := database.UserByName(u.DB, loginReq.Username)
+	if user == nil {
+		return &pb.LoginRes{}, status.Errorf(codes.InvalidArgument, InvalidUserNameNotFound)
+	}
+	if err != nil {
+		log.Println(err)
+		return &pb.LoginRes{}, status.Errorf(codes.Unknown, InternalServerError)
+	}
+
+	encPW := sha512.Sum512([]byte(loginReq.Password+u.Salt))
+
+	if user.Password != hex.EncodeToString(encPW[:]) {
+		return &pb.LoginRes{}, status.Errorf(codes.InvalidArgument, InvalidUserNameOrPassword)
+	}
+
+	// TODO: tokenの作成処理
+	var token string
+	return &pb.LoginRes{Token: token}, nil
 }
