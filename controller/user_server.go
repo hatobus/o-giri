@@ -47,7 +47,7 @@ func (u *UserServer) UserSignUp(_ context.Context, signUpReq *pb.SignUpRequest) 
 		if u != nil {
 			return &pb.Empty{}, status.Error(codes.InvalidArgument, fmt.Sprintf(InvalidDuplicatedUserName, signUpReq.Username))
 		}
-		if err != nil {
+		if err != sql.ErrNoRows {
 			log.Println(err)
 			return &pb.Empty{}, status.Error(codes.Unknown, InternalServerError)
 		}

@@ -4,7 +4,7 @@ drop table if exists user;
 create table user (
   id integer primary key auto_increment,
   name varchar(32) not null unique,
-  password varchar(64) not null
+  password varchar(128) not null
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 drop table if exists odai;
