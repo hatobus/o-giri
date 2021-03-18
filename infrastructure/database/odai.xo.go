@@ -44,7 +44,7 @@ func (o *Odai) Insert(db XODB) error {
 	const sqlstr = `INSERT INTO ogiri.odai (` +
 		`questioner_id, odai, next_ogiri_id, published_at` +
 		`) VALUES (` +
-		`?, ?, ?, ?, ?` +
+		`?, ?, ?, ?` +
 		`)`
 
 	// run query

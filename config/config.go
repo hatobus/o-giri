@@ -1,6 +1,8 @@
 package config
 
-import "github.com/kelseyhightower/envconfig"
+import (
+	"github.com/kelseyhightower/envconfig"
+)
 
 type MySQLConfig struct {
 	Host string `default:"localhost" required:"true"`
@@ -19,6 +21,8 @@ type OogiriConfig struct {
 type Config struct {
 	MySQL MySQLConfig `envconfig:"MYSQL" required:"true"`
 	Oogiri OogiriConfig `envconfig:"OOGIRI" require:"true"`
+	ServerPort string `envconfig:"PORT" required:"true"`
+	HashSalt string `envconfig:"SALT" required:"true"`
 }
 
 func Init() (*Config, error) {
